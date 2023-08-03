@@ -66,6 +66,14 @@ return new class extends Migration
 
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade')->onUpdate('cascade');
         });
+        //informes table
+        Schema::create('informes', function (Blueprint $table) {
+            $table->id();
+            $table->string('added_at');
+            $table->decimal('total', 8, 2);
+            
+            $table->timestamps();
+        });
     }
 
     /**

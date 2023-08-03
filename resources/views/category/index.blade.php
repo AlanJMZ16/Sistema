@@ -7,9 +7,12 @@
 @stop
 
 @section('content')
-    <a href="categories/create" class="btn btn-primary">Agregar</a>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <a href="categories/create" class="btn btn-primary">Agregar</a>
     <br><br>
-    <table class="table table-dark table-striped">
+    <table class="table table-striped">
         <thead class="table-border-bottom">
             <tr>
                 <th  scope="col">ID</th>
@@ -42,7 +45,11 @@
             @endforeach
         </tbody>
     </table>
+	    </div>
+    </div>
 </div>
+        
+
 @stop
 
 @section('css')

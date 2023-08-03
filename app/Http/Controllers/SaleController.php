@@ -40,28 +40,42 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $sales=Sale::all();
-        $proveedores=Proveedor::all();
-        $productos=Product::all();
-        return view('sale.create',compact('sales','proveedores','productos'));
-        //
+        $sales = Sale::all();
+        $proveedores = Proveedor::all();
+        $products = Product::all();
+        $precioProducto = $products->pluck('sale_price')->first();
+        return view('sale.create', compact('sales', 'proveedores', 'products', 'precioProducto'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $sales=new Sale();
-        $sales->proveedores_id=$request->input('idproveedor');
-        $sales->qty=$request->input('cantidad');
-        $sales->name=$request->input('precio');
-        $sales->buy_price=$request->input('taxes');
-        $sales->sale_price=$request->input('total');
-        $sales->save();
-        return redirect('/sales');
-        //
-    }
+{
+    // Validar los datos del formulario de venta
+    $validatedData = $request->validate([
+        'idproveedor' => 'required',
+        'idproducto' => 'required',
+        'cantidad' => 'required|numeric',
+        'precio' => 'required|numeric',
+    ]);
+
+    // Crear una nueva venta
+    $sale = new Sale();
+    $sale->idproveedor = $request->input('idproveedor');
+    $sale->idproducto = $request->input('idproducto');
+    $sale->qty = $request->input('cantidad');
+    $sale->price = $request->input('precio');
+    $sale->total = $request->input('cantidad') * $request->input('precio');
+    $sale->save();
+
+    // Restar la cantidad vendida del producto
+    $product = Product::find($request->input('idproducto'));
+    $product->quantity -= $request->input('cantidad');
+    $product->save();
+
+    return redirect('/sales')->with('success', 'Venta creada exitosamente');
+}
 
     /**
      * Display the specified resource.

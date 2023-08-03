@@ -13,7 +13,7 @@
     theme="danger" id="ibUpdatable" progress=0 progress-theme="teal"
     description="0% reputation completed to reach next level"/>
 
-<x-adminlte-small-box title="122" text="Usuarios " icon="fas fa-user-plus text-teal"
+<x-adminlte-small-box title="20" text="Clientes " icon="fas fa-user-plus text-teal"
 theme="primary" url="/clientes" url-text="View all users"/>
 
 @stop

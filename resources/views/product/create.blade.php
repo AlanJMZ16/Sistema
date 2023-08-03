@@ -7,8 +7,10 @@
 @stop
 
 @section('content')
-
-    <h2>Agregar Producto</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Agregar Producto</h2>
 <form action="/products" method="POST">
     @csrf
     <div class="mb-3">
@@ -48,6 +50,10 @@
         </div>
     </x-slot>
 </x-adminlte-input>
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="disableTaxes" onchange="toggleTaxes()">
+    <label class="form-check-label" for="disableTaxes">Deshabilitar IVA</label>
+</div>
 <x-adminlte-input name="taxes" id="taxes" label="IVA" placeholder="%" label-class="text-warning">
     <x-slot name="prependSlot">
         <div class="input-group-text">
@@ -74,6 +80,9 @@
     <a href="/products" class="btn btn-outline-secondary">Cancelar</a>
     <button type="submit" class="btn btn-outline-info">Guardar</button>
 </form>
+	    </div>
+    </div>
+</div>
 @stop
 
 @section('css')
@@ -82,5 +91,13 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+<script>
+    function toggleTaxes() {
+    var taxesInput = document.getElementById('taxes');
+    var disableCheckbox = document.getElementById('disableTaxes');
+
+    taxesInput.disabled = disableCheckbox.checked;
+}
+</script>
+
 @stop

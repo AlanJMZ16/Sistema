@@ -10,8 +10,7 @@
     <a href="proveedores/create" class="btn btn-primary">Agregar</a>
     <br><br>
 <div class="table-responsive">
-    <table class="table table-light table-striped">
-        <table class="table table-dark table-striped">
+    <table class="table table-striped">
             <thead>
                 <th scope="col">ID</th>
                 <th scope="col">Nombre</th>

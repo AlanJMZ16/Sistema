@@ -9,9 +9,9 @@
 @section('content')
 <form action="/sales" method="post">
     @csrf
-    @method('PUT')
+    @method('GET')
     <div class="mb-3">
-        <label for="" class="form-label text-dark-blue">Proveedor</label>
+        <label for="" class="form-label text-lightblue">Proveedor</label>
         <select name="idproveedor" id="" class="form-control">
           @foreach ($proveedores as $proveedor)
           <option value="{{$proveedor->id}}"">{{$proveedor->name}}</option>
@@ -21,19 +21,11 @@
     <div class="mb-3">
         <label for="" class="form-label text-dark-blue">Producto</label>
         <select name="idproducto" id="" class="form-control">
-          @foreach ($productos as $producto)
-          <option value="{{$producto->id}}"">{{$producto->name}}</option>
+          @foreach ($products as $product)
+          <option value="{{$product->id}}"">{{$product->name}}</option>
           @endforeach
         </select>
     </div>
-    {{--
-    <x-adminlte-input name="producto" id="producto" label="Producto" placeholder="producto" label-class="text-primary">
-        <x-slot name="prependSlot">
-            <div class="input-group-text">
-                <i class="fas fa-bars text-primary"></i>
-            </div>
-        </x-slot>
-    </x-adminlte-input>--}}
     <x-adminlte-input name="cantidad" id="cantidad" label="Cantidad" placeholder="cantidad" label-class="text-primary">
         <x-slot name="prependSlot">
             <div class="input-group-text">
@@ -41,17 +33,17 @@
             </div>
         </x-slot>
     </x-adminlte-input>
-    <x-adminlte-input name="precio" id="precio" label="Precio" placeholder=".00" label-class="text-danger" input-class="calculateTotal">
+    <select name="precio_opcion" id="precio_opcion" class="form-control" onchange="togglePrice()">
+        <option value="db">Tomar del inventario</option>
+        <option value="nuevo">No inventariado</option>
+    </select>
+    <x-adminlte-input name="precio" id="precio" label="Precio" placeholder=".00" label-class="text-danger" input-class="calculateTotal" disabled>
         <x-slot name="prependSlot">
             <div class="input-group-text">
                 <i class="fas fa-dollar-sing text-danger"></i>
             </div>
         </x-slot>
     </x-adminlte-input>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="disableTaxes" onchange="toggleTaxes()">
-        <label class="form-check-label" for="disableTaxes">Deshabilitar IVA</label>
-    </div>
     <x-adminlte-input name="total" id="total" label="Total" placeholder=".00" label-class="text-success" disabled>
         <x-slot name="prependSlot">
             <div class="input-group-text">
@@ -63,6 +55,10 @@
 <a href="/sales" class="btn btn-outline-secondary">Cancelar</a>
 <button type="submit" class="btn btn-outline-info">Guardar</button>
 </form>
+@if ($product->cantidad === 0)
+    <p>No hay más stock disponible</p>
+@endif
+
 @stop
 
 @section('css')
@@ -70,14 +66,7 @@
 @stop
 
 @section('js')
-<script>
-    function toggleTaxes() {
-        var taxesInput = document.getElementById('taxes');
-        var disableCheckbox = document.getElementById('disableTaxes');
 
-        taxesInput.disabled = disableCheckbox.checked;
-    }
-</script>
 <script>
     const cantidadInput = document.getElementById('cantidad');
     const precioInput = document.getElementById('precio');
@@ -85,7 +74,14 @@
 
     function calculateTotal() {
         const cantidad = parseFloat(cantidadInput.value);
-        const precio = parseFloat(precioInput.value);
+
+        let precio;
+        const precioOpcion = document.getElementById('precio_opcion').value;
+        if (precioOpcion === 'db') {
+            precio = parseFloat("{{ $precioProducto }}"); // Tomar el precio de la base de datos
+        } else {
+            precio = parseFloat(precioInput.value); // Tomar el nuevo precio ingresado por el usuario
+        }
 
         let total = cantidad * precio;
 
@@ -94,5 +90,19 @@
 
     cantidadInput.addEventListener('input', calculateTotal);
     precioInput.addEventListener('input', calculateTotal);
+
+    function togglePrice() {
+        var priceInput = document.getElementById('precio');
+        var precioOpcion = document.getElementById('precio_opcion').value;
+
+        if (precioOpcion === 'db') {
+            priceInput.disabled = true;
+        } else {
+            priceInput.disabled = false;
+        }
+    }
+
+    // Ejecutar la función togglePrice al cargar la vista
+    togglePrice();
 </script>
 @stop

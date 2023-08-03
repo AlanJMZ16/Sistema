@@ -290,10 +290,6 @@ return [
     */
 
     'menu' => [
-        [
-            'type'         => 'darkmode-widget',
-            'topnav_right' => true, // Or "topnav => true" to place on the left.
-        ],
         // Navbar items:
         [
             'type'         => 'navbar-search',
@@ -341,9 +337,14 @@ return [
             'icon'        => 'fas fa-fw fa-money-bill',
         ],
         [
+            'text'        => 'Reporte de ventas',
+            'url'         => 'informes',
+            'icon'        => 'fas fa-fw fa-file',
+        ],
+        [
             'text'        => 'Salarios',
             'url'         => '',
-            'icon'        => 'fas fa-fw fa-dollar-sing',
+            'icon'        => 'fas fa-dollar-sign',
         ],
         [
             'text'    => 'multilevel',

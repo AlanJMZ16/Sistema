@@ -7,7 +7,10 @@
 @stop
 
 @section('content')
-<h2>Editar Cliente</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Editar Cliente</h2>
 <form action="/clientes/{{$clientes->id}}" method="POST">    
     @csrf
     @method('PUT')
@@ -45,6 +48,9 @@
     <a href="/clientes" class="btn btn-outline-secondary">Cancelar</a>
     <button type="submit" class="btn btn-outline-info">Guardar</button>
  </form>
+	    </div>
+    </div>
+</div>
 @stop
 
 @section('css')

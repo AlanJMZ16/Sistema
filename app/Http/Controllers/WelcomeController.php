@@ -13,8 +13,9 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $total=Cliente::sum('name');
-        return view('welcome', compact('total'));
+        $welcome=Welcome::all();
+        $total = Cliente::sum('name');
+        return view('welcome', compact(['total' => $total],'welcome'));
         //
     }
 
@@ -38,8 +39,6 @@ class WelcomeController extends Controller
      */
     public function show(Welcome $welcome)
     {
-        $total = Cliente::sum('name');
-        return view('welcome', compact('total'));
         //
     }
 
