@@ -23,27 +23,29 @@
         </thead>
         <tbody class="table-group-divider">
             @foreach ($proveedores as $proveedor)
+        @if ($proveedor) <!-- Verifica si $proveedor es un objeto válido -->
             <tr class="">
-                <td scope="row">{{$proveedor->id}}</td>
-                <td>{{$proveedor->name}}</td>
-                <td>{{$proveedor->number}}</td>
-                <td>{{$proveedor->email}}</td>
-                <td>{{$proveedor->product}}</td>
-                <td>{{$proveedor->description}}</td>
+                <td scope="row">{{ $proveedor->id }}</td>
+                <td>{{ $proveedor->name }}</td>
+                <td>{{ $proveedor->number }}</td>
+                <td>{{ $proveedor->email }}</td>
+                <td>{{ $proveedor->product }}</td>
+                <td>{{ $proveedor->description }}</td>
                 <td>
-                    <form action="{{route('proveedores.destroy',$proveedor->id)}}" method="POST">
-                    <a class="btn btn-outline-info" href="/proveedores/{{$proveedor->id}}/edit">
-                        <i class="fa fa-lg fa-fw fa-pen"></i>
-                    </a>
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger" >
-                        <i class="fa fa-lg fa-fw fa-trash"></i>
-                    </button>
+                    <form action="{{ route('proveedores.destroy', $proveedor->id) }}" method="POST">
+                        <a class="btn btn-outline-info" href="/proveedores/{{ $proveedor->id }}/edit">
+                            <i class="fa fa-lg fa-fw fa-pen"></i>
+                        </a>
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fa fa-lg fa-fw fa-trash"></i>
+                        </button>
                     </form>
                 </td>
             </tr>
-            @endforeach
+        @endif
+    @endforeach
         </tbody>
     </table>
 </div>

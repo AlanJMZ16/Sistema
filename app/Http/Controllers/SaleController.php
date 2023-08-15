@@ -19,7 +19,7 @@ class SaleController extends Controller
         $proveedores=Proveedor::all();
 
         $data = [
-            'labels' => ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+            'labels' => ['Utilidad', 'Ganancias', 'Marzo', 'Abril', 'Mayo'],
             'datasets' => [
                 [
                     'label' => 'Ventas',
@@ -44,18 +44,32 @@ class SaleController extends Controller
         $proveedores = Proveedor::all();
         $products = Product::all();
         $precioProducto = $products->pluck('sale_price')->first();
+        
         return view('sale.create', compact('sales', 'proveedores', 'products', 'precioProducto'));
     }
+
+    public function updateStock(Request $request, Product $product)
+    {
+    $newQuantity = $product->stock - $request->input('quantity');
+    
+    if ($newQuantity >= 0) {
+        $product->update(['stock' => $newQuantity]);
+        return response()->json(['message' => 'Stock updated successfully'], 200);
+    } else {
+        return response()->json(['error' => 'Insufficient stock'], 400);
+    }
+    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
+    {
     // Validar los datos del formulario de venta
     $validatedData = $request->validate([
-        'idproveedor' => 'required',
-        'idproducto' => 'required',
+        'proveedor_id' => 'required',
+        'product_id' => 'required',
         'cantidad' => 'required|numeric',
         'precio' => 'required|numeric',
     ]);
@@ -75,7 +89,7 @@ class SaleController extends Controller
     $product->save();
 
     return redirect('/sales')->with('success', 'Venta creada exitosamente');
-}
+    }
 
     /**
      * Display the specified resource.
@@ -102,25 +116,24 @@ class SaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $sales=Sale::find($id);
-        $sales->proveedores_id=$request->input('idproveedor');
-        $sales->qty=$request->input('cantidad');
-        $sales->name=$request->input('precio');
-        $sales->buy_price=$request->input('taxes');
-        $sales->sale_price=$request->input('total');
-        $sales->update();
-        return redirect('/sales');
-        //
+        $sale = Sale::find($id);
+        $sale->idproveedor = $request->input('idproveedor');
+        $sale->qty = $request->input('cantidad');
+        $sale->price = $request->input('precio');
+        $sale->total = $request->input('cantidad') * $request->input('precio');
+        $sale->save();
+        
+        // 
+        return redirect('/sales')->with('success', 'Venta actualizada exitosamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sale $id)
-    {
-        $sales=Sale::find($id);
-        $sales->delete();
-        return redirect('/sales');
-        //
-    }
+    public function destroy($id)
+{
+    $sale = Sale::find($id);
+    $sale->delete();
+    return redirect('/sales')->with('success', 'Venta eliminada exitosamente');
+}
 }

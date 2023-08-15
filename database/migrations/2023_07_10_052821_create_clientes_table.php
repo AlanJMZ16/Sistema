@@ -42,9 +42,9 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name', 255)->unique();
             $table->integer('stock');
-            $table->decimal('buy_price', 25, 2)->nullable();
-            $table->decimal('sale_price', 25, 2);
-            $table->decimal('tax', 25, 2)->nullable();
+            $table->decimal('buy_price', 8, 2)->nullable();
+            $table->decimal('sale_price', 8, 2);
+            $table->decimal('tax', 8, 2)->nullable();
             $table->unsignedInteger('categorie_id');
             $table->unsignedInteger('proveedores_id');
             $table->text('description')->nullable();
@@ -58,13 +58,15 @@ return new class extends Migration
         // sales table
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('proveedor_id');
             $table->unsignedInteger('product_id');
             $table->integer('qty');
-            $table->decimal('price', 25, 2);
-            $table->decimal('total', 25, 2);
+            $table->decimal('price', 8, 2);
+            $table->decimal('total', 8, 2);
             $table->timestamp('added_at', $precision = 0);
 
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('proveedor_id')->references('id')->on('proveedores')->onDelete('cascade')->onUpdate('cascade');
         });
         //informes table
         Schema::create('informes', function (Blueprint $table) {
