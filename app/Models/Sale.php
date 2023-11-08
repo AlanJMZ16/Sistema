@@ -18,4 +18,5 @@ class Sale extends Model
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
     }
+    
 }

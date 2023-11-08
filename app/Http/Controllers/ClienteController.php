@@ -16,7 +16,10 @@ class ClienteController extends Controller
         return view('cliente.index')->with('clientes',$clientes);
         //
     }
-
+    public function ventas()
+    {
+    return $this->hasMany(Sale::class, 'cliente_id');
+    }
     /**
      * Show the form for creating a new resource.
      */

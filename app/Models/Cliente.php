@@ -12,4 +12,9 @@ class Cliente extends Model
     protected $primaryKey='id';
     protected $fillable=['name','number','email'];
     public $timestamps=false;
+
+    public function ventas()
+    {
+    return $this->hasMany(Sale::class, 'cliente_id');
+    }
 }

@@ -58,22 +58,27 @@ return new class extends Migration
         // sales table
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('cliente_id');
             $table->unsignedInteger('proveedor_id');
             $table->unsignedInteger('product_id');
             $table->integer('qty');
             $table->decimal('price', 8, 2);
             $table->decimal('total', 8, 2);
             $table->timestamp('added_at', $precision = 0);
+            
 
+            $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('proveedor_id')->references('id')->on('proveedores')->onDelete('cascade')->onUpdate('cascade');
         });
         //informes table
         Schema::create('informes', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
             $table->string('added_at');
             $table->decimal('total', 8, 2);
+            $table->unsignedInteger('sale_id');
             
+            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

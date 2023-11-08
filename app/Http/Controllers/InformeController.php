@@ -44,6 +44,17 @@ class InformeController extends Controller
     
         return view('informe.index', compact('ventas'));
     }
+    public function reporteVentas()
+    {
+    // Obtén todas las ventas
+    $ventas = Sale::with('cliente')->get();
+    
+    // Realiza cálculos para obtener las ventas totales por cliente y en general
+    $ventasPorCliente = $ventas->groupBy('cliente_id');
+    $ventasGenerales = $ventas->sum('total');
+    
+    return view('informe.index', compact('ventasPorCliente', 'ventasGenerales'));
+    }
     /**
      * Show the form for creating a new resource.
      */

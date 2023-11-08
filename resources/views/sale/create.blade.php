@@ -77,7 +77,7 @@
         } else {
             precio = parseFloat(precioInput.value);
         }
-
+   
         let total = cantidad * precio;
 
         totalInput.value = total.toFixed(2);

@@ -28,6 +28,7 @@ Route::resource('clientes','App\Http\Controllers\ClienteController');
 Route::resource('proveedores','App\Http\Controllers\ProveedorController');
 Route::resource('products',ProductController::class);
 Route::resource('sales',SaleController::class);
+Route::resource('salary',SalaryController::class);
 Route::resource('informes','App\Http\Controllers\InformeController');
 Route::get('informes', [InformeController::class, 'generarReporteVentas'])->name('informe.index');
 
