@@ -12,74 +12,75 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clientes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id(); 
             $table->string('name');
             $table->string('number');
             $table->string('email')->unique()->nullable();
             $table->text('description')->nullable();
-            $table->timestamp('added_at', $precision = 0);
+            $table->timestamps(); 
         });
+
         //proveedores table
         Schema::create('proveedores', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id(); 
             $table->string('name');
             $table->string('number');
             $table->string('email')->nullable();
             $table->text('product')->nullable();
             $table->text('description')->nullable();
-            $table->timestamp('added_at', $precision = 0);
+            $table->timestamps(); 
         });
-        // categories table
+
+        //categories table
         Schema::create('categories', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id(); 
             $table->string('name', 60)->unique();
             $table->text('description')->nullable();
-            $table->timestamp('added_at', $precision = 0);
+            $table->timestamps(); 
         });
 
         //products table
-        Schema::create('product', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('products', function (Blueprint $table) {
+            $table->id(); 
             $table->string('name', 255)->unique();
             $table->integer('stock');
             $table->decimal('buy_price', 8, 2)->nullable();
             $table->decimal('sale_price', 8, 2);
             $table->decimal('tax', 8, 2)->nullable();
-            $table->unsignedInteger('categorie_id');
-            $table->unsignedInteger('proveedores_id');
+            $table->unsignedBigInteger('categorie_id');
+            $table->unsignedBigInteger('proveedores_id');
             $table->text('description')->nullable();
-            $table->timestamp('added_at', $precision = 0);
+            $table->timestamps(); 
 
             $table->foreign('categorie_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('proveedores_id')->references('id')->on('proveedores')->onDelete('cascade')->onUpdate('cascade');
-
         });
 
         // sales table
         Schema::create('sales', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('cliente_id');
-            $table->unsignedInteger('proveedor_id');
-            $table->unsignedInteger('product_id');
+            $table->id(); 
+            $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('proveedor_id');
+            $table->unsignedBigInteger('product_id'); 
             $table->integer('qty');
             $table->decimal('price', 8, 2);
             $table->decimal('total', 8, 2);
-            $table->timestamp('added_at', $precision = 0);
-            
+            $table->timestamps(); 
 
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('product_id')->references('id')->on('product')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade'); 
             $table->foreign('proveedor_id')->references('id')->on('proveedores')->onDelete('cascade')->onUpdate('cascade');
         });
-        //informes table
-        Schema::create('informes', function (Blueprint $table) {
-            $table->id('id');
-            $table->string('added_at');
-            $table->decimal('total', 8, 2);
-            $table->unsignedInteger('sale_id');
-            
-            $table->foreign('sale_id')->references('id')->on('sales')->onDelete('cascade')->onUpdate('cascade');
-            $table->timestamps();
+
+        // salary table
+        Schema::create('salaries', function (Blueprint $table) {
+            $table->id(); 
+            $table->string('name_w')->unique();
+            $table->decimal('payment');
+            $table->integer('hours');
+            $table->decimal('total');
+
+            $table->timestamps(); 
         });
     }
 
@@ -89,8 +90,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('clientes');
+        Schema::dropIfExists('proveedores');
         Schema::dropIfExists('categories');
-        Schema::dropIfExists('producto');
+        Schema::dropIfExists('products');
         Schema::dropIfExists('sales');
+        Schema::dropIfExists('salaries');
     }
 };

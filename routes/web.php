@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\InformeController;
+use App\Http\Controllers\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,8 @@ Route::resource('clientes','App\Http\Controllers\ClienteController');
 Route::resource('proveedores','App\Http\Controllers\ProveedorController');
 Route::resource('products',ProductController::class);
 Route::resource('sales',SaleController::class);
-Route::resource('salary',SalaryController::class);
+Route::resource('salaries',SalaryController::class);
 Route::resource('informes','App\Http\Controllers\InformeController');
 Route::get('informes', [InformeController::class, 'generarReporteVentas'])->name('informe.index');
+
 

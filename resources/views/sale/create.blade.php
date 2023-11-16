@@ -11,12 +11,16 @@
     @csrf
     @method('POST')
     <div class="mb-3">
-        <label for="idproveedor" class="form-label text-lightblue">Proveedor</label>
-        <select name="idproveedor" id="idproveedor" class="form-control">
-            @foreach ($proveedores as $proveedor)
-                <option value="{{ $proveedor->id }}">{{ $proveedor->name }}</option>
+        <label for="idcliente" class="form-label text-lightblue">Cliente</label>
+        <select name="idcliente" id="idcliente" class="form-control">
+            @foreach ($clientes as $cliente)
+                <option value="{{ $cliente->id }}">{{ $cliente->name }}</option>
             @endforeach
         </select>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="anonimo" onchange="usAnonimo()" value="false">
+        <label class="form-check-label" for="anonimo">Cliente sin registro</label>
     </div>
     <div class="mb-3">
         <label for="idproducto" class="form-label text-dark-blue">Producto</label>
@@ -26,6 +30,10 @@
             @endforeach
         </select>
     </div>
+    <select name="precio_opcion" id="precio_opcion" class="form-control" onchange="togglePrice()">
+        <option value="db">Tomar del inventario</option>
+        <option value="nuevo">No inventariado</option>
+    </select>
     <x-adminlte-input name="cantidad" id="cantidad" label="Cantidad" placeholder="cantidad" label-class="text-primary">
         <x-slot name="prependSlot">
             <div class="input-group-text">
@@ -40,10 +48,6 @@
             </div>
         </x-slot>
     </x-adminlte-input>
-    <select name="precio_opcion" id="precio_opcion" class="form-control" onchange="togglePrice()">
-        <option value="db">Tomar del inventario</option>
-        <option value="nuevo">No inventariado</option>
-    </select>
     <x-adminlte-input name="total" id="total" label="Total" placeholder=".00" label-class="text-success" disabled>
         <x-slot name="prependSlot">
             <div class="input-group-text">
@@ -107,5 +111,14 @@
 
     // Ejecutar la función togglePrice al cargar la vista
     togglePrice();
+</script>
+<script>
+    function usAnonimo(){
+        var clienteSelect=document.getElementById('idcliente');
+        var disableCheckbox=document.getElementById('anonimo');
+
+        clienteSelect.disabled=disableCheckbox.checked;
+
+    }
 </script>
 @stop

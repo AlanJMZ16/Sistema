@@ -11,7 +11,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <form action="{{ route('informe.index') }}" method="GET">
+            <form action="{{ route('generar-reporte-ventas') }}" method="POST">
                 <button class="btn btn-primary" type="submit">Generar Reporte</button>
                 <x-adminlte-select id="intervalo" name="intervalo" label="Intervalo" label-class="text-lightblue"
                 igroup-size="lg">
@@ -34,12 +34,28 @@
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        @foreach ($ventas as $venta)
-                            <tr>
-                                <td>{{ $venta->added_at }}</td>
-                                <td>{{ $venta->total }}</td>
-                            </tr>
-                        @endforeach
+                        @if($selectedOption === 'diario')
+                            @foreach ($ventasDiarias as $venta)
+                                <tr>
+                                    <td>{{ $venta->added_at }}</td>
+                                    <td>{{ $venta->total }}</td>
+                                </tr>
+                            @endforeach
+                        @elseif($selectedOption === 'semanal')
+                            @foreach ($ventasSemanales as $venta)
+                                <tr>
+                                    <td>{{ $venta->added_at }}</td>
+                                    <td>{{ $venta->total }}</td>
+                                </tr>
+                            @endforeach
+                        @elseif($selectedOption === 'mensual')
+                            @foreach ($ventasMensuales as $venta)
+                                <tr>
+                                    <td>{{ $venta->added_at }}</td>
+                                    <td>{{ $venta->total }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -48,6 +64,8 @@
 </div>
 
 @stop
+
+
 
 @section('css')
 <link rel="stylesheet" href="{{asset('vendor/css/app.css')}}">

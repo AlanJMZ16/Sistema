@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Informe extends Model
 {
     use HasFactory;
-
+    protected $table='informes';
+    protected $primaryKey='id';
+    protected $fillable=['added_at','sale_id','created_at','added_at'];
+    public $timestamps=false;
     public function reporteVentas()
     {
     // Obtén todas las ventas

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Proveedor;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Cliente;
 
 class SaleController extends Controller
 {
@@ -43,9 +44,10 @@ class SaleController extends Controller
         $sales = Sale::all();
         $proveedores = Proveedor::all();
         $products = Product::all();
+        $clientes=Cliente::all();
         $precioProducto = $products->pluck('sale_price')->first();
         
-        return view('sale.create', compact('sales', 'proveedores', 'products', 'precioProducto'));
+        return view('sale.create', compact('sales', 'proveedores', 'products', 'precioProducto','clientes'));
     }
 
     public function updateStock(Request $request, Product $product)
@@ -65,7 +67,7 @@ class SaleController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+{
     // Validar los datos del formulario de venta
     $validatedData = $request->validate([
         'proveedor_id' => 'required',
@@ -76,20 +78,20 @@ class SaleController extends Controller
 
     // Crear una nueva venta
     $sale = new Sale();
-    $sale->idproveedor = $request->input('idproveedor');
-    $sale->idproducto = $request->input('idproducto');
+    $sale->cliente_id = $request->input('cliente_id'); // Reemplaza 'proveedor_id' por 'cliente_id'
+    $sale->product_id = $request->input('product_id');
     $sale->qty = $request->input('cantidad');
     $sale->price = $request->input('precio');
     $sale->total = $request->input('cantidad') * $request->input('precio');
     $sale->save();
 
     // Restar la cantidad vendida del producto
-    $product = Product::find($request->input('idproducto'));
-    $product->quantity -= $request->input('cantidad');
+    $product = Product::find($request->input('product_id'));
+    $product->stock -= $request->input('cantidad');
     $product->save();
 
     return redirect('/sales')->with('success', 'Venta creada exitosamente');
-    }
+}
 
     /**
      * Display the specified resource.

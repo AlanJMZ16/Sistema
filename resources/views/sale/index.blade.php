@@ -33,11 +33,11 @@
                     </table>
                 </div>
                 <br><br>
-                {{--Canva de la grafica--}}
+                {{--Canva de la grafica
                     <div>
                         <canvas id="myChart" width="z200px" height="200px"></canvas>
                     </div>
-                    
+                    --}}
             </div>
         </div>
     </div>

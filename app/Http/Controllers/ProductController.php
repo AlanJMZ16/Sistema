@@ -15,10 +15,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        $categories = Category::find('id');
-        $proveedores = Proveedor::find('id');
+        $categories = Category::all();
+        $proveedores = Proveedor::all();
         return view('product.index', compact('products', 'categories','proveedores'));
-        //
     }
 
     /**
@@ -30,7 +29,6 @@ class ProductController extends Controller
         $categories = Category::all();
         $proveedores = Proveedor::all();
         return view('product.create', compact('products', 'categories','proveedores'));
-        //
     }
 
     /**
@@ -38,18 +36,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $products=new Product;
-        $products->name=$request->input('nombre');
-        $products->stock=$request->input('stock');
-        $products->buy_price=$request->input('precioC');
-        $products->sale_price=$request->input('venta');
-        $products->tax=$request->input('taxes');
-        $products->description=$request->input('descripcion');
-        $products->categorie_id=$request->input('idcategoria');
-        $products->proveedores_id=$request->input('idproveedor');
-        $products->save();
+        $product = new Product; // Cambiado a $product
+        $product->name = $request->input('nombre');
+        $product->stock = $request->input('stock');
+        $product->buy_price = $request->input('precioC');
+        $product->sale_price = $request->input('venta');
+        $product->tax = $request->input('taxes');
+        $product->description = $request->input('descripcion');
+        $product->categorie_id = $request->input('idcategoria');
+        $product->proveedores_id = $request->input('idproveedor');
+        $product->save();
         return redirect('/products');
-        //
     }
 
     /**
@@ -66,30 +63,28 @@ class ProductController extends Controller
     public function edit($id)
     {
 
-        $products = Product::find($id);
+        $product = Product::find($id); // Cambiado a $product
         $categories = Category::all();
         $proveedores = Proveedor::all();
-        return view('product.edit', compact('products', 'categories','proveedores'));
-        //
+        return view('product.edit', compact('product', 'categories','proveedores'));
     }
 
-    /**s
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $products=Product::find($id);
-        $products->name=$request->input('nombre');
-        $products->stock=$request->input('stock');
-        $products->buy_price=$request->input('precioC');
-        $products->sale_price=$request->input('venta');
-        $products->tax=$request->input('taxes');
-        $products->description=$request->input('descripcion');
-        $products->categorie_id=$request->input('idcategoria');
-        $products->proveedores_id=$request->input('idproveedor');
-        $products->update();
+        $product = Product::find($id); // Cambiado a $product
+        $product->name = $request->input('nombre');
+        $product->stock = $request->input('stock');
+        $product->buy_price = $request->input('precioC');
+        $product->sale_price = $request->input('venta');
+        $product->tax = $request->input('taxes');
+        $product->description = $request->input('descripcion');
+        $product->categorie_id = $request->input('idcategoria');
+        $product->proveedores_id = $request->input('idproveedor');
+        $product->update();
         return redirect('/products');
-        //
     }
 
     /**
@@ -97,9 +92,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $products=Product::find($id);
-        $products->delete();
+        $product = Product::find($id); // Cambiado a $product
+        $product->delete();
         return redirect('/products');
-        //
     }
 }

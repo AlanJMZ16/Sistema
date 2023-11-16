@@ -22,28 +22,27 @@ class InformeController extends Controller
     }
     public function generarReporteVentas(Request $request)
     {
-        $intervalo = $request->input('intervalo');
+    $selectedOption = $request->input('intervalo');
+    $ventasDiarias = [];
+    $ventasSemanales = [];
+    $ventasMensuales = [];
 
-        $ventas = Sale::select('added_at', Sale::raw('SUM(total) as total'))
-            ->groupBy('added_at');
-    
-        if ($intervalo === 'diario') {
-            $ventas->whereDate('added_at', Carbon::now()->toDateString());
-        } elseif ($intervalo === 'semanal') {
-            $ventas->whereBetween('added_at', [
-                Carbon::now()->startOfWeek(),
-                Carbon::now()->endOfWeek(),
-            ]);
-        } elseif ($intervalo === 'mensual') {
-            $ventas->whereMonth('added_at', Carbon::now()->month);
-        } elseif (empty($intervalo)) {
-            $intervalo = 'diario';
-        }
-    
-        $ventas = $ventas->get();
-    
-        return view('informe.index', compact('ventas'));
+    if ($selectedOption === 'diario') {
+        // Realiza la consulta de ventas diarias y almacena los resultados en $ventasDiarias
+        $ventasDiarias = Ventas::where('created_at', '>=', now()->subDay())->get();
+    } elseif ($selectedOption === 'semanal') {
+        // Realiza la consulta de ventas semanales y almacena los resultados en $ventasSemanales
+        $ventasSemanales = Ventas::where('created_at', '>=', now()->subWeek())->get();
+    } elseif ($selectedOption === 'mensual') {
+        // Realiza la consulta de ventas mensuales y almacena los resultados en $ventasMensuales
+        $ventasMensuales = Ventas::where('created_at', '>=', now()->subMonth())->get();
     }
+
+    return view('informe.index', compact('ventasDiarias', 'ventasSemanales', 'ventasMensuales', 'selectedOption'));
+    }
+
+
+    
     public function reporteVentas()
     {
     // Obtén todas las ventas
@@ -78,6 +77,27 @@ class InformeController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function showDaily()
+    {
+        $sales = Sale::whereDate('added_at', today())->get();
+
+        return view('sales.index', compact('sales'));
+    }
+
+    public function showWeekly()
+    {
+        $sales = Sale::whereBetween('added_at', [now()->startOfWeek(), now()->endOfWeek()])->get();
+
+        return view('sales.index', compact('sales'));
+    }
+
+    public function showMonthly()
+    {
+        $sales = Sale::whereYear('added_at', now()->year)->whereMonth('added_at', now()->month)->get();
+
+        return view('sales.index', compact('sales'));
     }
 
     /**

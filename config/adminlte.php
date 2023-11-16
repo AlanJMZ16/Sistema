@@ -336,14 +336,16 @@ return [
             'url'         => 'sales',
             'icon'        => 'fas fa-fw fa-money-bill',
         ],
+        /*
         [
             'text'        => 'Reporte de ventas',
             'url'         => 'informes',
             'icon'        => 'fas fa-fw fa-file',
         ],
+        */
         [
             'text'        => 'Salarios',
-            'url'         => 'salary',
+            'url'         => 'salaries',
             'icon'        => 'fas fa-dollar-sign',
         ],
     ],
