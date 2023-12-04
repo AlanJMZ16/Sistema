@@ -7,72 +7,43 @@
 @stop
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h2>Editar Inventario</h2>
-<form action="/products/{{$products->id}}" method="POST">
+<h2>Editar Trabajador</h2>
+<form action="/salaries/{{$salaries->id}}" method="post">
     @csrf
     @method('PUT')
-    <div class="mb-3">
-      <label for="" class="form-label text-lightblue">Categoria</label>
-      <select name="idcategoria" id="" class="form-control">
-        @foreach ($categories as $category)
-        <option value="{{$category->id}}"">{{$category->name}}</option>
-        @endforeach
-      </select>
-    </div>
-    <div class="mb-3">
-        <label for="" class="form-label text-lightblue">Categoria</label>
-        <select name="idproveedor" id="" class="form-control">
-          @foreach ($proveedores as $proveedor)
-          <option value="{{$proveedor->id}}"">{{$proveedor->name}}</option>
-          @endforeach
-        </select>
-      </div>
-    <x-adminlte-input name="nombre" id="nombre" label="Nombre" value="{{$products->name}}" label-class="text-secondary">
-      <x-slot name="prependSlot">
-          <div class="input-group-text">
-              <i class="fas fa-box text-secondary"></i>
-          </div>
-      </x-slot>
-  </x-adminlte-input>
-  <x-adminlte-input name="stock" id="stock" label="Cantidad" value="{{$products->stock}}" label-class="text-success">
-    <x-slot name="prependSlot">
-        <div class="input-group-text">
-          <i class="fas fa-boxes text-success"></i>
-        </div>
-    </x-slot>
+<div >
+    <x-adminlte-input name="name_w" id="name_w" label="Nombre" value="{{$salaries->name_w}}" label-class="text-primary">
+        <x-slot name="prependSlot">
+            <div class="input-group-text">
+                <i class="fas fa-bars text-primary"></i>
+            </div>
+        </x-slot>
+    </x-adminlte-input>
+    <x-adminlte-input name="payment" id="payment" label="Pago(por hora)" value="{{$salaries->payment}}" label-class="text-secondary">
+        <x-slot name="prependSlot">
+            <div class="input-group-text">
+                <i class="fas fa-bars text-secondary"></i>
+            </div>
+        </x-slot>
+    </x-adminlte-input>
+    <x-adminlte-input name="hours" id="hours" label="Horas" value="{{$salaries->hours}}" label-class="text-success">
+            <x-slot name="prependSlot">
+                <div class="input-group-text">
+                    <i class="fas fa-bars text-success"></i>
+                </div>
+            </x-slot>
+    </x-adminlte-input>
+    <x-adminlte-input name="total" id="total" label="Salario" value="{{$salaries->total}}" label-class="text-info">
+        <x-slot name="prependSlot">
+            <div class="input-group-text">
+                <i class="fas fa-bars text-info"></i>
+            </div>
+        </x-slot>
 </x-adminlte-input>
-<x-adminlte-input name="precioC" id="precioC" label="Precio Compra" value="{{$products->buy_price}}" label-class="text-info">
-  <x-slot name="prependSlot">
-      <div class="input-group-text">
-          <i class="fas fa-coins text-info"></i>
-      </div>
-  </x-slot>
-</x-adminlte-input>
-<x-adminlte-input name="venta" id="venta" label="Precio Venta" value="{{$products->sale_price}}" label-class="text-warning">
-<x-slot name="prependSlot">
-    <div class="input-group-text">
-        <i class="fas fa-coins text-warning"></i>
-    </div>
-</x-slot>
-</x-adminlte-input>
-<x-adminlte-textarea name="descripcion" label="Descripcion" rows=5 label-class="text-info"
-    igroup-size="sm" value="{{$products->description}}">
-    <x-slot name="prependSlot">
-        <div class="input-group-text bg-light">
-            <i class="fas fa-lg fa-file-alt text-info"></i>
-        </div>
-    </x-slot>
-</x-adminlte-textarea>
-    </div>
-    <a href="/products" class="btn btn-outline-secondary">Cancelar</a>
-    <button type="submit" class="btn btn-outline-info">Guardar</button>
-</form>
-	    </div>
-    </div>
 </div>
+<a href="/salaries" class="btn btn-outline-secondary">Cancelar</a>
+<button type="submit" class="btn btn-outline-info">Guardar</button>
+</form>
 
 @stop
 

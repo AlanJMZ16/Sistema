@@ -46,7 +46,6 @@ return new class extends Migration
             $table->integer('stock');
             $table->decimal('buy_price', 8, 2)->nullable();
             $table->decimal('sale_price', 8, 2);
-            $table->decimal('tax', 8, 2)->nullable();
             $table->unsignedBigInteger('categorie_id');
             $table->unsignedBigInteger('proveedores_id');
             $table->text('description')->nullable();
@@ -60,7 +59,6 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id(); 
             $table->unsignedBigInteger('cliente_id');
-            $table->unsignedBigInteger('proveedor_id');
             $table->unsignedBigInteger('product_id'); 
             $table->integer('qty');
             $table->decimal('price', 8, 2);
@@ -69,7 +67,6 @@ return new class extends Migration
 
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade')->onUpdate('cascade'); 
-            $table->foreign('proveedor_id')->references('id')->on('proveedores')->onDelete('cascade')->onUpdate('cascade');
         });
 
         // salary table

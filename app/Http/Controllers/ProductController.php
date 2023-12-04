@@ -36,16 +36,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Product; // Cambiado a $product
-        $product->name = $request->input('nombre');
-        $product->stock = $request->input('stock');
-        $product->buy_price = $request->input('precioC');
-        $product->sale_price = $request->input('venta');
-        $product->tax = $request->input('taxes');
-        $product->description = $request->input('descripcion');
-        $product->categorie_id = $request->input('idcategoria');
-        $product->proveedores_id = $request->input('idproveedor');
-        $product->save();
+        $products = new Product; // Cambiado a $product
+        $products->name = $request->input('nombre');
+        $products->stock = $request->input('stock');
+        $products->buy_price = $request->input('precioC');
+        $products->sale_price = $request->input('venta');
+        $products->description = $request->input('descripcion');
+        $products->categorie_id = $request->input('idcategoria');
+        $products->proveedores_id = $request->input('idproveedor');
+        $products->save();
         return redirect('/products');
     }
 
@@ -63,10 +62,10 @@ class ProductController extends Controller
     public function edit($id)
     {
 
-        $product = Product::find($id); // Cambiado a $product
+        $products = Product::find($id); // Cambiado a $product
         $categories = Category::all();
         $proveedores = Proveedor::all();
-        return view('product.edit', compact('product', 'categories','proveedores'));
+        return view('product.edit', compact('products', 'categories','proveedores'));
     }
 
     /**
@@ -74,16 +73,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id); // Cambiado a $product
-        $product->name = $request->input('nombre');
-        $product->stock = $request->input('stock');
-        $product->buy_price = $request->input('precioC');
-        $product->sale_price = $request->input('venta');
-        $product->tax = $request->input('taxes');
-        $product->description = $request->input('descripcion');
-        $product->categorie_id = $request->input('idcategoria');
-        $product->proveedores_id = $request->input('idproveedor');
-        $product->update();
+        $products = Product::find($id); // Cambiado a $product
+        $products->name = $request->input('nombre');
+        $products->stock = $request->input('stock');
+        $products->buy_price = $request->input('precioC');
+        $products->sale_price = $request->input('venta');
+        $products->description = $request->input('descripcion');
+        $products->categorie_id = $request->input('idcategoria');
+        $products->proveedores_id = $request->input('idproveedor');
+        $products->update();
         return redirect('/products');
     }
 
@@ -92,8 +90,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id); // Cambiado a $product
-        $product->delete();
+        $products = Product::find($id); // Cambiado a $product
+        $products->delete();
         return redirect('/products');
     }
 }

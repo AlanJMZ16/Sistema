@@ -50,17 +50,6 @@
         </div>
     </x-slot>
 </x-adminlte-input>
-<div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="disableTaxes" onchange="toggleTaxes()" value="false">
-    <label class="form-check-label" for="disableTaxes">Deshabilitar IVA</label>
-</div>
-<x-adminlte-input name="taxes" id="taxes" label="IVA" placeholder="%" label-class="text-warning">
-    <x-slot name="prependSlot">
-        <div class="input-group-text">
-            <i class="fas fa-porcent text-warning"></i>
-        </div>
-    </x-slot>
-</x-adminlte-input>
 <x-adminlte-input name="venta" id="venta" label="Precio Venta" placeholder=".00" label-class="text-warning">
   <x-slot name="prependSlot">
       <div class="input-group-text">
@@ -91,13 +80,6 @@
 @stop
 
 @section('js')
-<script>
-    function toggleTaxes() {
-    var taxesInput = document.getElementById('taxes');
-    var disableCheckbox = document.getElementById('disableTaxes');
 
-    taxesInput.disabled = disableCheckbox.checked;
-}
-</script>
 
 @stop

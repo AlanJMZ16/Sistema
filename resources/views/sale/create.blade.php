@@ -7,118 +7,124 @@
 @stop
 
 @section('content')
-<form action="/sales" method="post">
-    @csrf
-    @method('POST')
-    <div class="mb-3">
-        <label for="idcliente" class="form-label text-lightblue">Cliente</label>
-        <select name="idcliente" id="idcliente" class="form-control">
-            @foreach ($clientes as $cliente)
-                <option value="{{ $cliente->id }}">{{ $cliente->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="anonimo" onchange="usAnonimo()" value="false">
-        <label class="form-check-label" for="anonimo">Cliente sin registro</label>
-    </div>
-    <div class="mb-3">
-        <label for="idproducto" class="form-label text-dark-blue">Producto</label>
-        <select name="idproducto" id="idproducto" class="form-control">
-            @foreach ($products as $product)
-                <option value="{{ $product->id }}">{{ $product->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <select name="precio_opcion" id="precio_opcion" class="form-control" onchange="togglePrice()">
-        <option value="db">Tomar del inventario</option>
-        <option value="nuevo">No inventariado</option>
-    </select>
-    <x-adminlte-input name="cantidad" id="cantidad" label="Cantidad" placeholder="cantidad" label-class="text-primary">
-        <x-slot name="prependSlot">
-            <div class="input-group-text">
-                <i class="fas fa-bars text-primary"></i>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card-body">
+                <form action="{{route('sales.store')}}" method="post">
+                    @csrf
+                    @method('POST')
+                    <div class="mb-3">
+                        <label for="idcliente" class="form-label text-lightblue">Cliente</label>
+                        <select name="idcliente" id="idcliente" class="form-control">
+                            @foreach ($clientes as $cliente)
+                                <option value="{{ $cliente->id }}">{{ $cliente->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="anonimo" onchange="usAnonimo()" value="false">
+                        <label class="form-check-label" for="anonimo">Cliente sin registro</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="idproducto" class="form-label text-dark-blue">Producto</label>
+                        <select name="idproducto" id="idproducto" class="form-control">
+                            @foreach ($products as $product)
+                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <x-adminlte-input name="cantidad" id="cantidad" label="Cantidad" placeholder="cantidad" label-class="text-primary">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text">
+                                <i class="fas fa-bars text-primary"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input>
+                    <x-adminlte-input name="precio" id="precio" label="Precio" placeholder=".00" label-class="text-danger" input-class="calculateTotal">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text">
+                                <i class="fas fa-dollar-sing text-danger"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input>
+                    <x-adminlte-input name="total" id="total" label="Total" placeholder=".00" label-class="text-success" disabled>
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text">
+                                <i class="fas fa-dollar-sign text-success"></i>
+                            </div>
+                        </x-slot>
+                    </x-adminlte-input>
+                    <a href="/sales" class="btn btn-outline-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-outline-info">Guardar</button>
+                </form>
             </div>
-        </x-slot>
-    </x-adminlte-input>
-    <x-adminlte-input name="precio" id="precio" label="Precio" placeholder=".00" label-class="text-danger" input-class="calculateTotal">
-        <x-slot name="prependSlot">
-            <div class="input-group-text">
-                <i class="fas fa-dollar-sing text-danger"></i>
-            </div>
-        </x-slot>
-    </x-adminlte-input>
-    <x-adminlte-input name="total" id="total" label="Total" placeholder=".00" label-class="text-success" disabled>
-        <x-slot name="prependSlot">
-            <div class="input-group-text">
-                <i class="fas fa-dollar-sign text-success"></i>
-            </div>
-        </x-slot>
-    </x-adminlte-input>
-    <button type="submit" class="btn btn-outline-info">Guardar</button>
-</form>
-
+        </div>
+    </div>
+</div>
+@if(session('error'))
+                        <div class="alert alert-danger">
+                    {{ session('error') }}
+                        </div>
+                    @endif
 @stop
 
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
+
 @section('js')
-<script>
-    const cantidadInput = document.getElementById('cantidad');
-    const precioInput = document.getElementById('precio');
-    const totalInput = document.getElementById('total');
-    const precioProducto = parseFloat("{{ $precioProducto }}");
-
-    function calculateTotal() {
-        const cantidad = parseFloat(cantidadInput.value);
-
-        let precio;
-        const precioOpcion = document.getElementById('precio_opcion').value;
-        if (precioOpcion === 'db') {
-            precio = parseFloat("{{ $precioProducto }}");
-        } else {
-            precio = parseFloat(precioInput.value);
-        }
-   
-        let total = cantidad * precio;
-
-        totalInput.value = total.toFixed(2);
-    }
-    function updateStock(productID, quantity) {
-    axios.post(`/update-stock/${productID}`, { quantity })
-        .then(response => {
-            console.log('Stock updated successfully');
-        })
-        .catch(error => {
-            console.error('Error updating stock:', error);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var productos = @json($products); // Convertir la lista de productos a JSON para usar en JavaScript
+            
+            // Función para actualizar el precio cuando se selecciona un producto
+            function actualizarPrecio() {
+                var idProductoSeleccionado = document.getElementById('idproducto').value;
+                var precioInput = document.getElementById('precio');
+                
+                // Buscar el producto seleccionado en la lista de productos
+                var productoSeleccionado = productos.find(function(producto) {
+                    return producto.id == idProductoSeleccionado;
+                });
+                
+                // Actualizar el valor del campo de precio con el precio del producto seleccionado
+                if (productoSeleccionado) {
+                    precioInput.value = productoSeleccionado.sale_price;
+                    calcularTotal(); // Llamar a la función para calcular el total después de actualizar el precio
+                }
+            }
+            
+            // Llamar a la función al cargar la página y cuando se cambie el producto seleccionado
+            actualizarPrecio();
+            document.getElementById('idproducto').addEventListener('change', actualizarPrecio);
+            
+            // Función para calcular el total basado en la cantidad y el precio
+            function calcularTotal() {
+                var cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
+                var precio = parseFloat(document.getElementById('precio').value) || 0;
+                var totalInput = document.getElementById('total');
+                
+                var total = cantidad * precio;
+                totalInput.value = total.toFixed(2); // Mostrar el total con 2 decimales
+            }
+            
+            // Llamar a la función para calcular el total cuando se cambie la cantidad o el precio
+            document.getElementById('cantidad').addEventListener('input', calcularTotal);
+            document.getElementById('precio').addEventListener('input', calcularTotal);
         });
-    }
+    </script>
 
-    cantidadInput.addEventListener('input', calculateTotal);
-    precioInput.addEventListener('input', calculateTotal);
-
-    function togglePrice() {
-        const priceInput = document.getElementById('precio');
-        const precioOpcion = document.getElementById('precio_opcion').value;
-
-        // Actualizar el valor del precio cuando cambie la opción
-        if (precioOpcion === 'db') {
-            precioInput.value = precioProducto.toFixed(2);
-        }
-    }
-
-    // Ejecutar la función togglePrice al cargar la vista
-    togglePrice();
-</script>
-<script>
+    <script>
     function usAnonimo(){
         var clienteSelect=document.getElementById('idcliente');
         var disableCheckbox=document.getElementById('anonimo');
 
         clienteSelect.disabled=disableCheckbox.checked;
 
+        clienteSelect="anonimo";
     }
-</script>
+    </script>
+
 @stop

@@ -23,9 +23,7 @@
                             <th scope="col">Cantidad</th>
                             <th scope="col">Precio de Compra</th>
                             <th scope="col">Precio de Venta</th>
-                            <th scope="col">IVA</th>
                             <th scope="col">Descripcion</th>
-                            <th scope="col">Fecha</th>
                             <th>ACCIONES</th>
                         </tr>
                     </thead>
@@ -39,9 +37,8 @@
                             <td>{{$product->stock}}</td>
                             <td>{{$product->buy_price}}</td>
                             <td>{{$product->sale_price}}</td>
-                            <td>{{$product->tax}}</td>
                             <td>{{$product->description}}</td>
-                            <td>{{$product->added_at}}</td>
+                            <td>{{$product->timestamp}}</td>
                             <td>
                                 <form action="{{route('products.destroy',$product->id)}}" method="POST">
                                     <a class="btn btn-outline-info" href="/products/{{$product->id}}/edit">

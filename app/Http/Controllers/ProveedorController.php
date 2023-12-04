@@ -55,11 +55,10 @@ class ProveedorController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    {
-        $proveedores=Proveedor::find($id);
-        return view('proveedor.index')->with('proveedores',$proveedores);
-        //
-    }
+{
+    $proveedor = Proveedor::find($id); // Fetch a single Proveedor by ID
+    return view('proveedor.edit', compact('proveedor')); // Pass a single Proveedor object to the view
+}
 
     /**
      * Update the specified resource in storage.

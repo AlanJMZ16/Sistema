@@ -22,7 +22,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/update-stock/{product}', 'SaleController@updateStock')->name('update-stock');
 Route::resource('categories',CategoryController::class);
 Route::resource('welcome','App\Http\Controllers\WelcomeController');
 Route::resource('clientes','App\Http\Controllers\ClienteController');

@@ -25,7 +25,8 @@ class SalaryController extends Controller
      */
     public function create()
     {
-        return view('salary.create');
+        $salaries=Salary::all();
+        return view('salary.create', compact('salaries'));
     }
 
     /**
@@ -36,10 +37,14 @@ class SalaryController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar y almacenar el salario
-        // ...
+        $salaries=new Salary;
+        $salaries->name_w=$request->input('name_w');
+        $salaries->payment=$request->input('payment');
+        $salaries->hours=$request->input('hours');
+        $salaries->total=$request->input('total');
+        $salaries->save();
 
-        return redirect()->route('salaries.index')->with('success', 'Salario creado exitosamente.');
+        return redirect('/salaries');
     }
 
     /**
@@ -62,8 +67,9 @@ class SalaryController extends Controller
      */
     public function edit($id)
     {
-        $salary = Salary::find($id);
-        return view('salary.edit', compact('salary'));
+        $salaries = Salary::find($id);
+
+        return view('salary.edit', compact('salaries'));
     }
 
     /**
@@ -75,10 +81,15 @@ class SalaryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validar y actualizar el salario
-        // ...
+        $salaries=Salary::find($id);
+        $salaries->name_w=$request->input('name_w');
+        $salaries->payment=$request->input('payment');
+        $salaries->hours=$request->input('hours');
+        $salaries->total=$request->input('total');
+        $salaries->update();
 
-        return redirect()->route('salaries.index')->with('success', 'Salario actualizado exitosamente.');
+        return redirect('/salaries');
+
     }
 
     /**
@@ -92,6 +103,6 @@ class SalaryController extends Controller
         $salary = Salary::find($id);
         $salary->delete();
 
-        return redirect()->route('salaries.index')->with('success', 'Salario eliminado exitosamente.');
+        return redirect('/salaries');
     }
 }
